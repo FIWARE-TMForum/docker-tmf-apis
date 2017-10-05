@@ -38,27 +38,28 @@ To do so, you must create a folder to place a new file file called `docker-compo
 ```
 version: '3'
 
-apis_db:
-    image: mysql:latest
-    ports:
-        - "3333:3306"
-    volumes:
-        - /var/lib/mysql
-    environment:
-        - MYSQL_ROOT_PASSWORD=my-secret-pw
+services:
+    apis_db:
+        image: mysql:latest
+        ports:
+            - "3333:3306"
+        volumes:
+            - ./apis-data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=my-secret-pw
 
-apis:
-    image: conwetlab/biz-ecosystem-apis
-    ports:
-        - "4848:4848"
-        - "8080:8080"
-    links:
-        - apis_db
-    depends_on:
-        - apis_db
-    environment:
-        - MYSQL_ROOT_PASSWORD=my-secret-pw
-        - MYSQL_HOST=apis_db
+    apis:
+        image: conwetlab/biz-ecosystem-apis
+        ports:
+            - "4848:4848"
+            - "8080:8080"
+        links:
+            - apis_db
+        depends_on:
+            - apis_db
+        environment:
+            - MYSQL_ROOT_PASSWORD=my-secret-pw
+            - MYSQL_HOST=apis_db
 
 ```
 
