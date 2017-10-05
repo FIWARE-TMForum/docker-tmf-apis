@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-ENV API_VERSION v5.4.1
+ENV API_VERSION develop
 
 RUN apt-get update; \
     apt-get install -y --fix-missing python2.7 python-pip git wget unzip maven mysql-client openjdk-8-jdk; \
