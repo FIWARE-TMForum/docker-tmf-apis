@@ -134,9 +134,11 @@ RUN git checkout $API_VERSION; \
 
 WORKDIR /apis
 
+RUN mkdir wars-ext
+VOLUME /apis/wars-ext
+
 COPY ./entrypoint.sh /
 COPY ./apis-entrypoint.py /
-
 
 EXPOSE 4848
 EXPOSE 8080

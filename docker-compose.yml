@@ -7,6 +7,8 @@ services:
             - "3333:3306"
         volumes:
             - ./apis-data:/var/lib/mysql
+        networks:
+            main:
         environment:
             - MYSQL_ROOT_PASSWORD=my-secret-pw
 
@@ -19,6 +21,16 @@ services:
             - apis_db
         depends_on:
             - apis_db
+        networks:
+            main:
+                aliases:
+                    - apis.docker
+        volumes:
+            - ./apis-wars:/apis/wars-ext
         environment:
             - MYSQL_ROOT_PASSWORD=my-secret-pw
             - MYSQL_HOST=apis_db
+
+networks:
+    main:
+        external: true

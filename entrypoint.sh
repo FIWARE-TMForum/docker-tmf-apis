@@ -114,4 +114,7 @@ exec 8<&- # close input connection
 exec 9>&- # close output connection
 exec 9<&- # close input connection
 
+# Make the war files available
+cp /apis/wars/* /apis/wars-ext/
+
 while :; do sleep 1000;  done
