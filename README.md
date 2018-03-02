@@ -57,6 +57,9 @@ services:
             - apis_db
         depends_on:
             - apis_db
+        volumes:
+            - ./apis-wars:/apis/wars-ext
+            - ./apis-config:/etc/default/tmf/
         environment:
             - MYSQL_ROOT_PASSWORD=my-secret-pw
             - MYSQL_HOST=apis_db

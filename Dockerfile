@@ -3,14 +3,15 @@ FROM ubuntu:16.04
 ENV API_VERSION develop
 
 RUN apt-get update; \
-    apt-get install -y --fix-missing python2.7 python-pip git wget unzip maven mysql-client openjdk-8-jdk; \
+    apt-get install -y --fix-missing python2.7 net-tools python-pip git wget unzip maven mysql-client openjdk-8-jdk; \
     wget http://download.java.net/glassfish/4.1/release/glassfish-4.1.zip; \
     unzip glassfish-4.1.zip; \
     pip install sh; \
     wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz; \
     tar -xvf mysql-connector-java-5.1.39.tar.gz; \
     cp ./mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar glassfish4/glassfish/domains/domain1/lib; \
-    mkdir /apis;
+    mkdir /apis; \
+    mkdir -p /etc/default/tmf/
 
 WORKDIR /apis
 
@@ -135,7 +136,7 @@ RUN git checkout $API_VERSION; \
 WORKDIR /apis
 
 RUN mkdir wars-ext
-VOLUME /apis/wars-ext
+VOLUME ["/apis/wars-ext", "/etc/default/tmf/"]
 
 COPY ./entrypoint.sh /
 COPY ./apis-entrypoint.py /

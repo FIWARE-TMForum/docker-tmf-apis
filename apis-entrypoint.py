@@ -43,8 +43,7 @@ APIS = [{
          "bbdd": "DSUSAGEMANAGEMENT",
          "war": "DSUsageManagement.war",
          "root": "DSUsageManagement",
-         "resourcename": "jdbc/usagedbv2"}
-]
+         "resourcename": "jdbc/usagedbv2"}]
 
 
 def pool(name, user, pwd, url):
