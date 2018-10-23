@@ -2,8 +2,7 @@
 
 Starting on version 5.4.0, you are able to run the Business API Ecosystem with Docker. In this context, the current
 repository contains the  Docker image with the Business Ecosystem APIs offered by the TMForum. As you may
-know, the different Business Ecosystem APIs require a MySQL database to store some information. For this reason, you must create an
-additional container to run the database. You can do it automatically with `docker-compose` or manually by following
+know, the different Business Ecosystem APIs require a MySQL database to store some information. For this reason, you must create an additional container to run the database. You can do it automatically with `docker-compose` or manually by following
 the given steps.
 
 The current Docker image contains the whole set of TMForum APIs which are required by the Business API Ecosystem GE of FIWARE
@@ -59,14 +58,21 @@ services:
             - apis_db
         volumes:
             - ./apis-wars:/apis/wars-ext
-            - ./apis-config:/etc/default/tmf/
+            # Provided if configured by volume rather than by environment
+            # - ./apis-config:/etc/default/tmf/
         environment:
+            - BAE_SERVICE_HOST=http://proxy.docker:8004/
             - MYSQL_ROOT_PASSWORD=my-secret-pw
             - MYSQL_HOST=apis_db
 
 ```
 
 **Note**: The provided docker-compose file is using a port schema that can be easily changed modifying the file
+
+The APIs have a configuration option which can be used in order to specify the URL that should be used for generating
+*href* values. This setting can be configured in two different ways, using the *BAE_SERVICE_HOST* environment variable,
+or providing a *server* setting in a setting.properties file located at */etc/default/tmf* The later implies mounting
+the directory of the file itself using a Docker volume.
 
 Once you have created the file, run the following command for creating the containers:
 
