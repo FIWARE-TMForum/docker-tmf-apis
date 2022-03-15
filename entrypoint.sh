@@ -13,25 +13,31 @@ then
     exit 1
 fi
 
+if [[ -z ${MYSQL_USER} ]];
+then
+    echo MYSQL_USER is not set
+    exit 1
+fi
+
 ############################################################################################
 
 function create_tables { 
     echo "Creating Database tables"
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPRODUCTCATALOG2;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPRODUCTCATALOG2;"
 
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPRODUCTORDERING;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPRODUCTORDERING;"
 
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPRODUCTINVENTORY;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPRODUCTINVENTORY;"
 
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPARTYMANAGEMENT;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSPARTYMANAGEMENT;"
 
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSBILLINGMANAGEMENT;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSBILLINGMANAGEMENT;"
 
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSCUSTOMER;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSCUSTOMER;"
 
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSUSAGEMANAGEMENT;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS DSUSAGEMANAGEMENT;"
 
-    mysql -u root --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS RSS;"
+    mysql -u ${MYSQL_USER} --password=${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -e "CREATE DATABASE IF NOT EXISTS RSS;"
 }
 
 

@@ -4,7 +4,7 @@ from sh import asadmin, cd
 from os import getenv
 import time
 
-DBUSER = "root"
+DBUSER = getenv("MYSQL_USER", "root")
 DBPWD = getenv("MYSQL_ROOT_PASSWORD", "toor")
 DBHOST = getenv("MYSQL_HOST", "localhost")
 DBPORT = "3306"
