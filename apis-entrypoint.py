@@ -4,10 +4,10 @@ from sh import asadmin, cd
 from os import getenv
 import time
 
-DBUSER = "root"
+DBUSER = getenv("MYSQL_USER", "root")
 DBPWD = getenv("MYSQL_ROOT_PASSWORD", "toor")
 DBHOST = getenv("MYSQL_HOST", "localhost")
-DBPORT = "3306"
+DBPORT = getenv("MYSQL_PORT", "3306")
 
 APIS = [{
          "bbdd": "DSPRODUCTCATALOG2",
@@ -71,7 +71,7 @@ for api in APIS:
     pool(api.get("bbdd"), DBUSER, DBPWD, generate_mysql_url(api.get("bbdd")))
     resource(api.get("resourcename"), api.get("bbdd"))
 
-cd("wars")
+cd("/apis/wars/")
 for api in APIS:
     try:
         asadmin("deploy", "--force", "false", "--contextroot", api.get('root'), "--name", api.get('root'), api.get('war'))
@@ -81,5 +81,4 @@ for api in APIS:
 
 elapsed_time = time.time() - start_time
 print(elapsed_time)
-cd("..")
 

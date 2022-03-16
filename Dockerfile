@@ -1,11 +1,9 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.04 as build
 
 ENV API_VERSION develop
 
 RUN apt-get update; \
     apt-get install -y --fix-missing python2.7 net-tools python-pip git wget unzip maven mysql-client openjdk-8-jdk; \
-    wget http://download.java.net/glassfish/4.1/release/glassfish-4.1.zip; \
-    unzip glassfish-4.1.zip; \
     pip install sh; \
     wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz; \
     tar -xvf mysql-connector-java-5.1.39.tar.gz; \
@@ -132,17 +130,29 @@ RUN git checkout $API_VERSION; \
     mvn install; \
     mv ./target/DSUsageManagement.war ../wars/
 
+FROM glassfish:4.1-jdk8
 
-WORKDIR /apis
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_USER=root
+ENV MYSQL_HOST=172.17.0.2
+ENV MYSQL_PORT=3306
 
-RUN mkdir wars-ext
-VOLUME ["/apis/wars-ext", "/etc/default/tmf/"]
+COPY --from=build /apis/wars/ /apis/wars/
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./apis-entrypoint.py /apis-entrypoint.py
 
-COPY ./entrypoint.sh /
-COPY ./apis-entrypoint.py /
+RUN apt-get update; \
+    apt-get install -y --fix-missing mysql-client python-pip wget;
+RUN pip install sh;
+RUN wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz; \
+    tar -xvf mysql-connector-java-5.1.39.tar.gz; \
+    cp ./mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar /usr/local/glassfish4/glassfish/domains/domain1/lib;
 
-EXPOSE 4848
-EXPOSE 8080
+# allow a user !=root to start glassfish
+RUN chmod -R a+rw /usr/local/glassfish4
+
+# never run as root
+USER 1001
 
 ENTRYPOINT ["/entrypoint.sh"]
 
