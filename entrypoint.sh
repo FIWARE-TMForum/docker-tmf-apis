@@ -51,6 +51,11 @@ function create_tables {
 function glassfish_related {
     echo "Deploying APIs"
     python /apis-entrypoint.py
+    entrypointStatus=$?
+    if [[ ${glassfishStatus} -ne 0 ]]; then
+      echo "Was not able to deploy apis."
+      exit 1
+    fi
 }
 
 ############################################################################################

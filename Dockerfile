@@ -134,7 +134,7 @@ FROM glassfish:4.1-jdk8
 
 ENV MYSQL_ROOT_PASSWORD=root
 ENV MYSQL_USER=root
-ENV MYSQL_HOST=localhost
+ENV MYSQL_HOST=172.17.0.2
 ENV MYSQL_PORT=3306
 
 COPY --from=build /apis/wars/ /apis/wars/
@@ -142,7 +142,17 @@ COPY ./entrypoint.sh /entrypoint.sh
 COPY ./apis-entrypoint.py /apis-entrypoint.py
 
 RUN apt-get update; \
-    apt-get install -y --fix-missing mysql-client;
+    apt-get install -y --fix-missing mysql-client python-pip wget;
+RUN pip install sh;
+RUN wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz; \
+    tar -xvf mysql-connector-java-5.1.39.tar.gz; \
+    cp ./mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar /usr/local/glassfish4/glassfish/domains/domain1/lib;
+
+# allow a user !=root to start glassfish
+RUN chmod -R a+rw /usr/local/glassfish4
+
+# never run as root
+USER 1001
 
 ENTRYPOINT ["/entrypoint.sh"]
 

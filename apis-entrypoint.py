@@ -71,7 +71,7 @@ for api in APIS:
     pool(api.get("bbdd"), DBUSER, DBPWD, generate_mysql_url(api.get("bbdd")))
     resource(api.get("resourcename"), api.get("bbdd"))
 
-cd("wars")
+cd("/apis/wars/")
 for api in APIS:
     try:
         asadmin("deploy", "--force", "false", "--contextroot", api.get('root'), "--name", api.get('root'), api.get('war'))
