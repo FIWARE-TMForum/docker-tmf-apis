@@ -81,5 +81,4 @@ for api in APIS:
 
 elapsed_time = time.time() - start_time
 print(elapsed_time)
-cd("..")
 
