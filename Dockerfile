@@ -1,11 +1,9 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.04 as build
 
 ENV API_VERSION develop
 
 RUN apt-get update; \
     apt-get install -y --fix-missing python2.7 net-tools python-pip git wget unzip maven mysql-client openjdk-8-jdk; \
-    wget http://download.java.net/glassfish/4.1/release/glassfish-4.1.zip; \
-    unzip glassfish-4.1.zip; \
     pip install sh; \
     wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz; \
     tar -xvf mysql-connector-java-5.1.39.tar.gz; \
@@ -132,17 +130,19 @@ RUN git checkout $API_VERSION; \
     mvn install; \
     mv ./target/DSUsageManagement.war ../wars/
 
+FROM glassfish:4.1-jdk8
 
-WORKDIR /apis
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_USER=root
+ENV MYSQL_HOST=localhost
+ENV MYSQL_PORT=3306
 
-RUN mkdir wars-ext
-VOLUME ["/apis/wars-ext", "/etc/default/tmf/"]
+COPY --from=build /apis/wars/ /apis/wars/
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./apis-entrypoint.py /apis-entrypoint.py
 
-COPY ./entrypoint.sh /
-COPY ./apis-entrypoint.py /
-
-EXPOSE 4848
-EXPOSE 8080
+RUN apt-get update; \
+    apt-get install -y --fix-missing mysql-client;
 
 ENTRYPOINT ["/entrypoint.sh"]
 

@@ -7,7 +7,7 @@ import time
 DBUSER = getenv("MYSQL_USER", "root")
 DBPWD = getenv("MYSQL_ROOT_PASSWORD", "toor")
 DBHOST = getenv("MYSQL_HOST", "localhost")
-DBPORT = "3306"
+DBPORT = getenv("MYSQL_PORT", "3306")
 
 APIS = [{
          "bbdd": "DSPRODUCTCATALOG2",
